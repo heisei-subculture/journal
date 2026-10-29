@@ -2,25 +2,23 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>平成サブカル通信 — あの頃の熱量で、今のおもしろいを。</title>
-<meta name="description" content="J-POP、ハロプロ、映画・マンガ、お笑い。ニュースも昔の記事も、平成育ちのアンテナで。">
-<meta name="theme-color" content="#fff000"><link rel="stylesheet" href="style.css">
+<title>平成サブカル通信</title>
+<meta name="description" content="音楽・アイドル・映画・マンガ・お笑いの記事とコメント。">
+<meta name="theme-color" content="#fff000"><link rel="stylesheet" href="style.css?v=2">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 </head>
 <body>
 <a class="skip" href="#feed">記事へスキップ</a>
-<div class="mastline"><span>好きなもの、まだまだ増えてます。</span><span>J-POP ／ ハロプロ ／ 映画・マンガ ／ お笑い</span></div>
-<header class="masthead"><a class="brand" href="index.html"><span class="stamp">平<br>成</span><span>平成サブカル通信<small>あの頃も、今も。好きなものを掘りつづける。</small></span></a><nav aria-label="メイン"><a href="#feed">記事を読む ↓</a><a href="#about">この通信について</a><a id="editor-link" href="editor.html" hidden>編集室 ↗</a></nav></header>
+<header class="masthead"><a class="brand" href="index.html"><span class="stamp">平<br>成</span><span>平成サブカル通信<small>音楽・アイドル・映画・マンガ・お笑い</small></span></a><nav aria-label="メイン"><a href="#feed">記事を読む ↓</a><a href="#about">この通信について</a><a id="editor-link" href="editor.html" hidden>編集室 ↗</a></nav></header>
 <main>
-<section class="intro" aria-label="この通信の好きなもの"><div class="main-pop"><span class="pop-kicker">懐かしいだけじゃ、もったいない。</span><h1>その「好き」、<br><em>まだ現役。</em></h1><p>新着も、昔の記事も。<br>気になる話を、勝手に掘ってます。</p><span class="pop-star" aria-hidden="true">偏愛<br>上等!</span></div><div class="shelf-pop"><span class="shelf-label">本日の棚、こんな感じ。</span><p class="shelf-word">J-POP<span>あのイントロで戻れる。</span></p><p class="shelf-word pink">モー娘。<span>語りたいこと、ありすぎ。</span></p><p class="shelf-word blue">バトロワ × M-1<span>笑いも衝撃も、忘れられん。</span></p></div><div class="mini-pop"><span class="mini-head">掘り出し注意</span><strong>昔の記事に<br>今、刺さる。</strong><p>インタビュー／制作秘話<br>ニュース／ひとりごと</p><a href="#feed">今日の収穫をのぞく ↓</a><span class="barcode" aria-hidden="true">▥▥▥▥▥▥▥▥</span></div></section>
-<section class="reading" aria-labelledby="feed-title"><div class="section-heading"><h2 id="feed-title">きょうの収穫<span>NEWS + 掘り出しもの</span></h2><p id="updated">読み込み中</p></div>
+<section class="reading" aria-labelledby="feed-title"><div class="section-heading"><h2 id="feed-title">記事一覧</h2><p id="updated">読み込み中</p></div>
 <div class="controls"><div class="filters" role="group" aria-label="ジャンル"><button class="active" data-category="すべて" aria-pressed="true">すべて</button><button data-category="音楽" aria-pressed="false">音楽</button><button data-category="アイドル" aria-pressed="false">アイドル</button><button data-category="映画・マンガ" aria-pressed="false">映画・マンガ</button><button data-category="お笑い" aria-pressed="false">お笑い</button><button data-category="雑記" aria-pressed="false">雑記</button></div><label class="search"><span>検索</span><input id="search" type="search" placeholder="好きな名前や作品で探す" aria-label="記事を検索"></label></div>
 <div class="subfilters" role="group" aria-label="投稿種別"><button class="active" data-kind="all" aria-pressed="true">すべての投稿</button><button data-kind="news" aria-pressed="false">ニュース・再発見</button><button data-kind="thought" aria-pressed="false">つぶやき</button><button data-kind="saved" aria-pressed="false">あとで読む ☆</button></div>
 <p id="count" class="result-count" role="status" aria-live="polite"></p>
-<div class="columns"><div id="feed" tabindex="-1"></div><aside><section class="aside-card"><p class="eyebrow">店主の趣味、出てます。</p><h2>このへんが<br>好きな人へ。</h2><p>J-POP、モー娘。、<br>バトロワ、M-1。</p><p class="small">平成に出会った好きなものを入口に、今も昔も、気になる話題を拾っていきます。</p><div class="scribble">寄り道したぶん、<br>おもしろい。</div></section><section class="aside-notes"><h2>ひとこと置き場<span>店主のつぶやき</span></h2><div id="notes"></div></section><section class="aside-source"><p>AIが記事を探して、短く整理。<br>コメントとつぶやきは、書き手本人の言葉です。</p><p>詳しい内容は、記事ごとの出典リンクから。</p></section></aside></div>
+<div class="columns"><div id="feed" tabindex="-1"></div><aside><section class="aside-picks"><h2>ピックアップ</h2><ol id="picks"></ol></section><section class="aside-notes"><h2>つぶやき</h2><div id="notes"></div></section></aside></div>
 </section>
-<section id="about" class="about"><p class="eyebrow">ABOUT THIS JOURNAL</p><h2>好きだったものは、<br>今の自分にもつながっている。</h2><p>平成サブカル通信は、音楽・アイドル・映画・マンガ・お笑いを集める個人のカルチャー帖です。速報だけを追わず、過去のインタビューや作品の背景にも目を向けます。</p><p>AIによる選定・要約にはその旨を表示し、元記事の日付と出典を添えています。書き手のコメントは、実際に書いたものだけ掲載します。</p></section>
+<section id="about" class="about"><details><summary>このサイトについて</summary><p>記事には出典と元記事の公開日を表示しています。AIによる選定・要約と、運営者のコメント・つぶやきは分けて掲載しています。「あとで読む」は、このブラウザに保存されます。</p></details></section>
 </main>
 <footer><span>平成サブカル通信</span><span>HEISEI SUBCULTURE JOURNAL</span><a href="#">ページの先頭へ ↑</a></footer>
-<script src="feed.js"></script><script src="app.js"></script>
+<script src="feed.js"></script><script src="app.js?v=2"></script>
 </body></html>
