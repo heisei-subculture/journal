@@ -46,7 +46,7 @@ function article(p, index) {
   if(p.type==='news')actions.append(sourceLink(p));else actions.append(node('span','',date(p.created_at)));
   const b=node('button','save',saved.has(p.id)?'★ 保存済み':'☆ あとで読む');b.type='button';b.setAttribute('aria-pressed',String(saved.has(p.id)));b.setAttribute('aria-label',`${p.title}を${saved.has(p.id)?'保存から外す':'保存する'}`);
   b.onclick=()=>{if(saved.has(p.id))saved.delete(p.id);else saved.add(p.id);try{localStorage.setItem('heisei-saved',JSON.stringify([...saved]));}catch(_){}render();};actions.append(b);body.append(actions);
-  if(p.ai_generated)body.append(node('p','reason','AI選定・要約'));
+  if(p.ai_generated)body.append(node('p','reason',p.selected_by==='user'?'運営者選定・AI要約':'AI選定・要約'));
   a.append(body);
   return a;
 }

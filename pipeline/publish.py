@@ -9,7 +9,7 @@ def merge(document, batch):
     if not isinstance(batch, list) or len(batch) > 5:
         raise ValueError('1回のニュースは最大5件です')
     today = dt.datetime.now(JST).date()
-    count = sum(p['type']=='news' and p.get('ai_generated') and dt.datetime.fromisoformat(p['created_at']).astimezone(JST).date()==today for p in document['posts'])
+    count = sum(p['type']=='news' and p.get('ai_generated') and p.get('selected_by') != 'user' and dt.datetime.fromisoformat(p['created_at']).astimezone(JST).date()==today for p in document['posts'])
     known = {p['id'] for p in document['posts']}
     urls = {p.get('source_url') for p in document['posts']}
     added = []
