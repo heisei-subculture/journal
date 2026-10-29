@@ -12,7 +12,14 @@ function article(p, index) {
   const a = node('article','entry'+(index===0?' featured':'')); a.id=p.id; a.dataset.category=p.category;
   const cover=node('div','cover');cover.setAttribute('aria-hidden','true');
   const words={'音楽':['J-POP','MUSIC'],'アイドル':['アイドル','IDOL'],'映画・マンガ':['映画と','マンガ'],'お笑い':['お笑い','COMEDY'],'雑記':['日々の','メモ']};
-  const label=words[p.category]||[p.category,'JOURNAL'];
+  const topics={
+    'tsunku-2007':['LOVE\nマシーン','つんく♂ / 2007'],
+    'sasaji-2026':['スピッツ\nユニコーン\nプリプリ','笹路正徳 / 2026'],
+    'nakagawake-2021':['M-1の\nその後。','中川家 / 2021'],
+    'battle-royale-2025':['バトル・\nロワイアル','藤原竜也 / 深作欣二'],
+    'ytv-2026':['次の\n漫才師。','ytv漫才新人賞 / 2026']
+  };
+  const label=topics[p.id]||words[p.category]||[p.category,'JOURNAL'];
   cover.append(node('span','cover-index',String(index+1).padStart(2,'0')),node('strong','cover-word',label[0]),node('span','cover-sub',label[1]));
   a.append(cover);
   const body=node('div','card-body');
