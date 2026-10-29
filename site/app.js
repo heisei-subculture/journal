@@ -9,24 +9,31 @@ const date = value => new Intl.DateTimeFormat('ja-JP',{year:'numeric',month:'2-d
 const safeUrl = value => {try {const u = new URL(value); return u.protocol === 'https:' && !u.username && !u.password ? u.href : null;}catch(_){return null;}};
 function sourceLink(p) {const a = node('a','source',`${p.source_name}で読む ↗`);const url=safeUrl(p.source_url);if(url){a.href=url;a.target='_blank';a.rel='noopener noreferrer';}return a;}
 function article(p, index) {
-  const a = node('article','entry'+(index===0?' featured':'')); a.id=p.id;
+  const a = node('article','entry'+(index===0?' featured':'')); a.id=p.id; a.dataset.category=p.category;
+  const cover=node('div','cover');cover.setAttribute('aria-hidden','true');
+  const words={'音楽':['J-POP','MUSIC'],'アイドル':['アイドル','IDOL'],'映画・マンガ':['映画と','マンガ'],'お笑い':['お笑い','COMEDY'],'雑記':['日々の','メモ']};
+  const label=words[p.category]||[p.category,'JOURNAL'];
+  cover.append(node('span','cover-index',String(index+1).padStart(2,'0')),node('strong','cover-word',label[0]),node('span','cover-sub',label[1]));
+  a.append(cover);
+  const body=node('div','card-body');
   const meta=node('div','meta');meta.append(node('span','tag'+(p.type==='thought'?' thought':''),p.category));
   const archive = p.type==='news' && new Date(p.created_at)-new Date(p.published_at)>7*86400000;
   meta.append(node('span','',p.type==='thought'?'つぶやき':archive?'再発見':'ニュース'));
   meta.append(node('time','',`紹介 ${date(p.created_at)}`));
   if(p.type==='news')meta.append(node('time','',`元記事 ${date(p.published_at)}`));
-  a.append(meta);
+  body.append(meta);
   const heading=node('h3');
   if(p.type==='news' && safeUrl(p.source_url)){const link=node('a','',p.title);link.href=safeUrl(p.source_url);link.target='_blank';link.rel='noopener noreferrer';heading.append(link);}else heading.textContent=p.title;
-  a.append(heading);
-  if(p.summary)a.append(node('p','summary',p.summary));
-  if(p.comment){const box=node('div','comment');box.append(node('span','comment-label',p.type==='thought'?'ひとりごと / EDITOR’S NOTE':'ひとこと / EDITOR’S COMMENT'),node('p','',p.comment));a.append(box);}
+  body.append(heading);
+  if(p.summary)body.append(node('p','summary',p.summary));
+  if(p.comment){const box=node('div','comment');box.append(node('span','comment-label',p.type==='thought'?'ひとりごと / EDITOR’S NOTE':'ひとこと / EDITOR’S COMMENT'),node('p','',p.comment));body.append(box);}
 
   const actions=node('div','entry-actions');
   if(p.type==='news')actions.append(sourceLink(p));else actions.append(node('span','',date(p.created_at)));
   const b=node('button','save',saved.has(p.id)?'★ 保存済み':'☆ あとで読む');b.type='button';b.setAttribute('aria-pressed',String(saved.has(p.id)));b.setAttribute('aria-label',`${p.title}を${saved.has(p.id)?'保存から外す':'保存する'}`);
-  b.onclick=()=>{if(saved.has(p.id))saved.delete(p.id);else saved.add(p.id);try{localStorage.setItem('heisei-saved',JSON.stringify([...saved]));}catch(_){}render();};actions.append(b);a.append(actions);
-  if(p.ai_generated)a.append(node('p','reason','AI選定・要約'));
+  b.onclick=()=>{if(saved.has(p.id))saved.delete(p.id);else saved.add(p.id);try{localStorage.setItem('heisei-saved',JSON.stringify([...saved]));}catch(_){}render();};actions.append(b);body.append(actions);
+  if(p.ai_generated)body.append(node('p','reason','AI選定・要約'));
+  a.append(body);
   return a;
 }
 function render(){
@@ -38,8 +45,5 @@ document.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>{category=
 document.querySelectorAll('[data-kind]').forEach(b=>b.onclick=()=>{kind=b.dataset.kind;document.querySelectorAll('[data-kind]').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b));});render();});
 $('#search').addEventListener('input',e=>{query=e.target.value;render();});
 $('#updated').textContent=feed.updated_at?`更新 ${date(feed.updated_at)}`:'最初の配信を準備中';
-for(const p of feed.posts.filter(p=>p.type==='news').slice(0,5)){const li=node('li');const a=node('a','',p.title);a.href='#'+p.id;a.onclick=()=>{query='';$('#search').value='';document.querySelector('[data-category="すべて"]').click();document.querySelector('[data-kind="all"]').click();};li.append(a);$('#picks').append(li);}
-const notes=feed.posts.filter(p=>p.type==='thought').sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,3);
-if(notes.length)for(const p of notes){const e=node('article');e.append(node('time','',date(p.created_at)),node('p','',p.comment.slice(0,100)+(p.comment.length>100?'…':'')));const a=node('a','','続きを読む →');a.href='#'+p.id;a.onclick=()=>{category='すべて';kind='all';query='';$('#search').value='';document.querySelector('[data-category="すべて"]').click();document.querySelector('[data-kind="all"]').click();};e.append(a);$('#notes').append(e);}else $('.aside-notes').hidden=true;
 if(['127.0.0.1','localhost'].includes(location.hostname))$('#editor-link').hidden=false;
 render();
