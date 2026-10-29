@@ -21,6 +21,13 @@ function article(p, index) {
   };
   const label=topics[p.id]||words[p.category]||[p.category,'JOURNAL'];
   cover.append(node('span','cover-index',String(index+1).padStart(2,'0')),node('strong','cover-word',label[0]),node('span','cover-sub',label[1]));
+  if(p.type==='news' && safeUrl(p.image_url)){
+    cover.removeAttribute('aria-hidden');
+    const imageLink=node('a','article-image');imageLink.href=safeUrl(p.source_url);imageLink.target='_blank';imageLink.rel='noopener noreferrer';imageLink.setAttribute('aria-label',p.title+'（元記事）');
+    const img=node('img');img.alt='';img.loading=index===0?'eager':'lazy';img.decoding='async';img.referrerPolicy='no-referrer';
+    img.onload=()=>{a.classList.add('has-image');if(img.naturalWidth<300)a.classList.add('small-image');};img.onerror=()=>{imageLink.remove();a.classList.remove('has-image');};img.src=safeUrl(p.image_url);
+    imageLink.append(img);cover.append(imageLink);
+  }
   a.append(cover);
   const body=node('div','card-body');
   const meta=node('div','meta');meta.append(node('span','tag'+(p.type==='thought'?' thought':''),p.category));

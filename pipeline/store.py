@@ -23,7 +23,7 @@ def validate(p):
         raise ValueError('投稿IDが不正です')
     if p.get('type') not in ['news', 'thought'] or p.get('category') not in CATEGORIES:
         raise ValueError('投稿種別・カテゴリが不正です')
-    for key, limit in [('title', 140), ('summary', 400), ('comment', 4000), ('source_name', 100), ('source_url', 2000), ('selection_reason', 300)]:
+    for key, limit in [('title', 140), ('summary', 400), ('comment', 4000), ('source_name', 100), ('source_url', 2000), ('image_url', 2000), ('selection_reason', 300)]:
         if not isinstance(p.get(key, ''), str) or len(p.get(key, '')) > limit:
             raise ValueError(f'{key}の長さ・形式を確認してください')
     if not p.get('title', '').strip():
@@ -36,6 +36,10 @@ def validate(p):
         u = urlsplit(p.get('source_url', ''))
         if u.scheme != 'https' or not u.hostname or u.username or u.password:
             raise ValueError('出典にはHTTPSのURLを指定してください')
+    if p.get('image_url'):
+        image = urlsplit(p['image_url'])
+        if image.scheme != 'https' or not image.hostname or image.username or image.password:
+            raise ValueError('画像にはHTTPSのURLを指定してください')
     for field in ['published_at', 'created_at']:
         d = dt.datetime.fromisoformat(p[field])
         if d.tzinfo is None:
