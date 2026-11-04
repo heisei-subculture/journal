@@ -1,0 +1,76 @@
+/* Rounded, buoyant pop lettering, with handwritten shelf-label accents. */
+@font-face{font-family:PopDisplay;src:url('fonts/mochiy-pop-one.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:PopHand;src:url('fonts/yusei-magic.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
+.journal{--display:PopDisplay,'Hiragino Kaku Gothic ProN',sans-serif;--hand:PopHand,'Hiragino Sans',sans-serif}
+.journal .masthead{padding-top:34px;padding-bottom:30px;gap:24px}
+.journal .brand{font-family:var(--display);font-weight:400;font-size:clamp(28px,3.6vw,48px);gap:17px;transform:rotate(-2deg)}
+.journal .brand-name{display:flex;align-items:center;gap:.08em;white-space:nowrap;line-height:1.35;letter-spacing:.015em}
+.journal .brand-era{display:inline-block;transform:rotate(-5deg);font-size:.78em}
+.journal .brand-pop{display:inline-block;color:#f5298a;-webkit-text-stroke:1px var(--ink);paint-order:stroke fill;text-shadow:2px 3px 0 var(--ink);transform:rotate(2deg);margin:0 .08em}
+.journal .brand-news{display:inline-block;font-size:.65em;letter-spacing:0;transform:rotate(7deg);background:var(--ink);color:var(--yellow);padding:.12em .24em}
+.journal .brand small{font-family:var(--hand);font-weight:400;font-size:12px;letter-spacing:.12em;margin-top:10px}
+.journal .stamp{font-family:var(--display);font-weight:400;font-size:25px;line-height:1.12;padding:8px 11px;background:var(--blue)}
+.journal nav{font-family:var(--hand);font-size:12px;gap:17px}
+.journal .section-heading h2{font-family:var(--display);font-weight:400;font-size:23px;letter-spacing:-.05em;transform:rotate(-3deg);margin:3px 0 9px}
+.journal .filters{gap:11px}
+.journal .filters button{font-family:var(--display);font-weight:400;font-size:14px;line-height:1.4;padding:9px 16px}
+.journal .subfilters button{font-family:var(--hand);font-weight:400;font-size:13px}
+.journal .entry h3,.journal .entry.featured h3{font-family:var(--display);font-weight:400;font-size:24px;line-height:1.48;letter-spacing:.015em;margin:14px 0 16px;overflow-wrap:anywhere;font-feature-settings:'palt'}
+.journal .entry.featured h3{font-size:clamp(27px,2.7vw,36px);line-height:1.4}
+.journal .entry:nth-child(5n+3) h3{font-size:27px;letter-spacing:.015em}
+.journal .entry:nth-child(5n+5) h3{font-family:var(--hand);font-size:25px;font-weight:400;line-height:1.5;letter-spacing:-.03em}
+.journal .card-body{padding:23px 24px}
+.journal .tag{font-family:var(--hand);font-size:12px;padding:2px 10px;font-weight:400}
+.journal .summary{font-size:13px;line-height:1.95;letter-spacing:.015em}
+.journal .source,.journal .save{font-family:var(--hand);font-size:12px;font-weight:400}
+.journal .comment p{font-family:var(--hand);font-size:17px;line-height:1.8}
+.journal .cover-word{font-family:var(--display);font-weight:400;letter-spacing:0}
+.journal .cover-sub{font-family:var(--hand);font-weight:400}
+.journal footer>span:first-child{font-family:var(--display);font-size:14px}
+@media(max-width:1000px){.journal .masthead{flex-wrap:wrap;gap:20px}.journal .brand{font-size:42px}.journal .masthead nav{margin-left:auto}.journal .entry h3{font-size:23px}.journal .entry.featured h3{font-size:29px}.journal .entry:nth-child(5n+3) h3{font-size:25px}.journal .entry:nth-child(5n+5) h3{font-size:24px}}
+@media(max-width:600px){.journal .masthead{padding:24px 0 20px;gap:14px}.journal .brand{font-size:clamp(22px,6.7vw,38px);gap:10px}.journal .brand small{font-size:10px;letter-spacing:0}.journal .stamp{font-size:19px;padding:6px 8px}.journal .brand-pop{text-shadow:1px 2px 0 var(--ink);-webkit-text-stroke:.6px var(--ink)}.journal .masthead nav{font-size:11px}.journal .section-heading h2{font-size:20px}.journal .filters{gap:9px}.journal .filters button{font-size:12px;padding:7px 12px}.journal .subfilters{gap:14px}.journal .subfilters button{font-size:11px}.journal .entry .card-body{padding:14px 12px}.journal .entry.featured .card-body{padding:20px}.journal .entry h3,.journal .entry:nth-child(5n+3) h3{font-size:17px;line-height:1.6;margin:12px 0}.journal .entry:nth-child(5n+5) h3{font-size:19px}.journal .entry.featured h3{font-size:27px;line-height:1.5}.journal .entry.featured .summary{font-size:13px}.journal .tag{font-size:10px;padding:2px 6px}.journal .source,.journal .save{font-size:10px}}
+
+/* Give the round glyphs room; keep the logo soft instead of outlined in black. */
+.journal .brand-pop{-webkit-text-stroke:0;text-shadow:2px 3px 0 #fff1ab}
+.journal .brand-news{border-radius:9px;padding:.16em .28em}
+.journal .filters button{border-radius:9px}
+.journal .entry h3{line-height:1.65;font-feature-settings:normal}
+.journal .entry.featured h3{line-height:1.6}
+@media(max-width:600px){.journal .brand{font-size:clamp(21px,6.1vw,35px)}.journal .brand-name{gap:0}.journal .entry.featured h3{font-size:24px}}
+
+/* Readable supporting text on the original yellow palette. */
+.journal{--hand:'Hiragino Maru Gothic ProN','Hiragino Sans',Meiryo,sans-serif}
+.journal .brand small,.journal nav,.journal .subfilters button,.journal .tag,.journal .source,.journal .save{font-family:var(--hand);font-weight:700}
+.journal .meta,.journal .meta time{font-size:11px;font-weight:600}
+.journal .summary,.journal .entry.featured .summary{font-family:var(--hand);font-size:14px;line-height:1.95;font-weight:500}
+.journal .reason,.journal .result-count{font-size:11px}
+.journal .entry:nth-child(5n+5) h3{font-family:var(--display)}
+.journal .entry[data-category="ゲーム"] .cover{background:#bada54}
+@media(max-width:600px){.journal .meta,.journal .meta time,.journal .entry:not(.featured) .meta time{font-size:10px}.journal .entry:not(.featured) .summary{font-size:12px}}
+
+/* Restore the original title typography. */
+.journal .brand,.journal .stamp,.journal .section-heading h2,.journal .entry h3,.journal .entry.featured h3,.journal .entry:nth-child(5n+3) h3,.journal .entry:nth-child(5n+5) h3,.journal .cover-word,.journal footer>span:first-child{font-family:var(--font);font-weight:900}
+.journal .entry h3{font-size:18px;line-height:1.55;letter-spacing:-.5px;margin:10px 0}
+.journal .entry.featured h3{font-size:25px;line-height:1.5}
+.journal .section-heading h2{font-size:14px;transform:none;letter-spacing:normal}
+.journal .brand{font-size:40px;letter-spacing:-2px}
+@media(min-width:1001px){.journal .entry:nth-child(5n+3) h3{font-size:21px}}
+@media(max-width:1000px){.journal .brand{font-size:32px}}
+@media(max-width:600px){.journal .brand{font-size:26px;letter-spacing:-1px}.journal .entry h3,.journal .entry:nth-child(5n+3) h3,.journal .entry:nth-child(5n+5) h3{font-size:14px;line-height:1.65}.journal .entry.featured h3{font-size:22px;line-height:1.5}}
+
+/* Custom transparent sticker wordmark. */
+.journal .masthead{padding-top:22px;padding-bottom:22px;gap:24px}
+.journal .brand{display:block;flex:0 1 640px;min-width:0;max-width:640px;transform:none;line-height:0}
+.journal .brand-logo{display:block;width:100%;height:auto}
+.journal .masthead nav{flex-shrink:0}
+@media(max-width:1000px){.journal .masthead{gap:8px}.journal .brand{flex-basis:600px;width:min(100%,600px)}.journal .masthead nav{margin-left:auto}}
+@media(max-width:600px){.journal .masthead{padding-top:18px;padding-bottom:20px;gap:12px}.journal .brand{flex-basis:100%;max-width:100%}.journal .masthead nav{width:100%;justify-content:flex-end;gap:16px}}
+
+/* Collectible category stickers sit above their shelf labels. */
+.journal .filters{align-items:flex-end;gap:12px;padding-top:40px}
+.journal .filters button{position:relative;min-height:42px;white-space:nowrap}
+.journal .category-sticker{position:absolute;width:52px;height:52px;object-fit:contain;left:50%;top:-43px;transform:translateX(-50%) rotate(-8deg);pointer-events:none;transition:transform .15s ease}
+.journal .filters button:nth-child(odd) .category-sticker{transform:translateX(-50%) rotate(8deg)}
+.journal .filters button:hover .category-sticker,.journal .filters button:focus-visible .category-sticker{transform:translateX(-50%) translateY(-4px) rotate(0)}
+@media(max-width:600px){.journal .filters{gap:46px 10px;padding-top:32px}.journal .filters button{padding:8px 12px;min-height:40px}.journal .category-sticker{width:44px;height:44px;top:-36px}}
+@media(prefers-reduced-motion:reduce){.journal .category-sticker{transition:none}}

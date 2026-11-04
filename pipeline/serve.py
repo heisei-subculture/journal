@@ -1,16 +1,22 @@
 """Loopback-only editor and preview. Never deploy this editor as a public API."""
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 import json
 import uuid
 from urllib.parse import urlsplit
 from store import ROOT, read, validate, save, locked, build, now
 
+from review import read_queue, decide
+
 class Handler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(ROOT / 'site'), **kwargs)
 
+    def end_headers(self):
+        self.send_header('Cache-Control', 'no-store')
+        super().end_headers()
+
     def safe_host(self):
-        return self.headers.get('Host') in ['127.0.0.1:8765', 'localhost:8765']
+        return self.headers.get('Host') in ['127.0.0.1:8766', 'localhost:8766']
 
     def reply(self, status, body):
         raw = json.dumps(body, ensure_ascii=False).encode()
@@ -22,17 +28,21 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         if not self.safe_host(): return self.reply(403, {'error':'Host not allowed'})
+        if urlsplit(self.path).path == '/api/review': return self.reply(200, read_queue())
         if urlsplit(self.path).path == '/api/posts': return self.reply(200, read())
         return super().do_GET()
 
     def do_POST(self):
         if not self.safe_host() or self.headers.get('Origin') != 'http://' + self.headers.get('Host','') or self.headers.get('X-Heisei-Editor') != '1':
             return self.reply(403, {'error':'ローカル編集画面から保存してください'})
-        if self.path != '/api/posts': return self.reply(404, {'error':'Not found'})
+        if self.path not in ['/api/posts','/api/review']: return self.reply(404, {'error':'Not found'})
         try:
             size = int(self.headers.get('Content-Length', '0'))
             if size < 1 or size > 30000: raise ValueError('投稿サイズが不正です')
             p = json.loads(self.rfile.read(size))
+            if self.path == '/api/review':
+                with locked(): decide(p.get('id'), p.get('action'))
+                return self.reply(200, {'ok': True})
             with locked():
                 doc = read()
                 old = next((x for x in doc['posts'] if x['id'] == p.get('id')), None)
@@ -54,5 +64,5 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__ == '__main__':
     with locked(): build()
-    print('平成サブカル通信 http://127.0.0.1:8765\n編集室 http://127.0.0.1:8765/editor.html', flush=True)
-    HTTPServer(('127.0.0.1',8765), Handler).serve_forever()
+    print('平成サブカル通信 http://127.0.0.1:8766\n編集室 http://127.0.0.1:8766/editor.html', flush=True)
+    ThreadingHTTPServer(('127.0.0.1',8766), Handler).serve_forever()

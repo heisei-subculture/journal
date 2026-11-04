@@ -11,7 +11,7 @@ function sourceLink(p) {const a = node('a','source',`${p.source_name}で読む �
 function article(p, index) {
   const a = node('article','entry'+(index===0?' featured':'')); a.id=p.id; a.dataset.category=p.category;
   const cover=node('div','cover');cover.setAttribute('aria-hidden','true');
-  const words={'音楽':['J-POP','MUSIC'],'アイドル':['アイドル','IDOL'],'映画・マンガ':['映画と','マンガ'],'お笑い':['お笑い','COMEDY'],'雑記':['日々の','メモ']};
+  const words={'音楽':['J-POP','MUSIC'],'アイドル':['アイドル','IDOL'],'映画・マンガ':['映画と','マンガ'],'お笑い':['お笑い','COMEDY'],'ゲーム':['ゲーム','GAME'],'雑記':['日々の','メモ']};
   const topics={
     'tsunku-2007':['LOVE\nマシーン','つんく♂ / 2007'],
     'sasaji-2026':['スピッツ\nユニコーン\nプリプリ','笹路正徳 / 2026'],

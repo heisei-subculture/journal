@@ -7,8 +7,10 @@ def package():
     with locked(): build()
     destination = ROOT / 'dist'
     destination.mkdir(exist_ok=True)
-    for name in ['index.html', 'style.css', 'app.js', 'feed.js', 'favicon.svg']:
+    for name in ['index.html', 'style.css', 'pop-type.css', 'app.js', 'feed.js', 'favicon.svg']:
         shutil.copyfile(ROOT / 'site' / name, destination / name)
+    for name in ['assets', 'fonts']:
+        shutil.copytree(ROOT / 'site' / name, destination / name, dirs_exist_ok=True)
     (destination / '.nojekyll').touch()
     print('Public site: dist/')
 

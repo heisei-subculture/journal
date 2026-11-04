@@ -10,7 +10,7 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'data/posts.json'
-CATEGORIES = ['音楽', 'アイドル', '映画・マンガ', 'お笑い', '雑記']
+CATEGORIES = ['音楽', 'アイドル', '映画・マンガ', 'お笑い', 'ゲーム', '雑記']
 JST = dt.timezone(dt.timedelta(hours=9))
 
 def now():
