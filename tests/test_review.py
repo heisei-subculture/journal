@@ -20,5 +20,24 @@ class ReviewTests(unittest.TestCase):
     posts=store.read()['posts'];self.assertEqual(len(posts),1);self.assertEqual(posts[0]['comment'],'本人のコメント');self.assertEqual(posts[0]['selected_by'],'user')
     self.assertEqual(review.read_queue()['candidates'][0]['review_status'],'approved')
     self.assertNotIn('review_status',(root/'site/feed.js').read_text())
+ def test_withdraw_preserves_latest_comment_and_can_reapprove(self):
+  with tempfile.TemporaryDirectory() as folder:
+   root=Path(folder);(root/'data').mkdir();(root/'site').mkdir()
+   p=copy.deepcopy(next(x for x in store.read()['posts'] if x['type']=='news'));p['id']='withdraw-test';p['comment']=''
+   with patch.object(store,'ROOT',root),patch.object(store,'DATA',root/'data/posts.json'),patch.object(review,'QUEUE',root/'data/review.json'):
+    store.save({'updated_at':None,'posts':[]});review.save_queue({'candidates':[{**p,'review_status':'pending'}]})
+    with self.assertRaises(ValueError):review.decide(p['id'],'withdraw')
+    review.decide(p['id'],'approve')
+    doc=store.read();doc['posts'][0]['comment']='採用後に書いたコメント';store.save(doc)
+    review.decide(p['id'],'withdraw')
+    self.assertEqual(store.read()['posts'],[])
+    self.assertNotIn(p['id'],(root/'site/feed.js').read_text())
+    candidate=review.read_queue()['candidates'][0]
+    self.assertEqual(candidate['review_status'],'pending')
+    self.assertEqual(candidate['comment'],'採用後に書いたコメント')
+    self.assertEqual(candidate['summary'],p['summary'])
+    review.decide(p['id'],'approve')
+    self.assertEqual(len(store.read()['posts']),1)
+    self.assertEqual(store.read()['posts'][0]['comment'],'採用後に書いたコメント')
  def test_invalid_action_does_not_write(self):
   with self.assertRaises(ValueError):review.decide('missing','delete')

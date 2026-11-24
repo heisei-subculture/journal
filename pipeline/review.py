@@ -10,7 +10,7 @@ def save_queue(queue):
     atomic(QUEUE, json.dumps(queue, ensure_ascii=False, indent=2)+'\n')
 def stage(batch):
     q=read_queue(); known={p['source_url'] for p in q['candidates']}|{p.get('source_url') for p in read()['posts']}
-    if len(batch)>5: raise ValueError('候補は1回最大5件です')
+    if len(batch)>10: raise ValueError('候補は1回最大10件です')
     added=0
     for p in batch:
         validate(p)
@@ -19,7 +19,7 @@ def stage(batch):
         q['candidates'].append({**p,'review_status':'pending'});known.add(p['source_url']);added+=1
     save_queue(q);return added
 def decide(id, action):
-    if action not in ('approve','reject','pending'): raise ValueError('操作が不正です')
+    if action not in ('approve','reject','pending','withdraw'): raise ValueError('操作が不正です')
     q=read_queue();p=next((p for p in q['candidates'] if p['id']==id),None)
     if p is None: raise ValueError('候補が見つかりません')
     if action=='approve':
@@ -29,8 +29,18 @@ def decide(id, action):
             post.update(created_at=now(),selected_by='user',approved_at=now())
             doc['posts'].insert(0,post);doc['updated_at']=now();save(doc)
         build()
+    elif action=='withdraw':
+        if p.get('review_status')!='approved': raise ValueError('採用済みの記事だけ取り下げできます')
+        doc=read()
+        published=next((x for x in doc['posts'] if x['id']==id or x.get('source_url')==p['source_url']),None)
+        if published is not None:
+            # Preserve the latest edits made after approval, including human comments.
+            p.update({k:v for k,v in published.items() if k!='id'})
+            doc['posts']=[x for x in doc['posts'] if x['id']!=published['id']]
+            doc['updated_at']=now();save(doc)
+        build()
     elif p.get('review_status')=='approved': raise ValueError('掲載済み記事はここでは見送りにできません')
-    p.update(review_status={'approve':'approved','reject':'rejected','pending':'pending'}[action],reviewed_at=now());save_queue(q)
+    p.update(review_status={'approve':'approved','reject':'rejected','pending':'pending','withdraw':'pending'}[action],reviewed_at=now());save_queue(q)
 if __name__=='__main__':
     import argparse
     parser=argparse.ArgumentParser();parser.add_argument('batch');args=parser.parse_args()

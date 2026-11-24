@@ -13,10 +13,10 @@ async function refresh(){
   if(url(p.image_url)){const img=el('img');img.src=url(p.image_url);img.alt='';img.loading='lazy';img.referrerPolicy='no-referrer';img.style.cssText='float:right;width:130px;max-height:130px;object-fit:contain;margin:0 0 12px 14px';img.onerror=()=>img.remove();card.append(img);}
   card.append(el('h3',p.title),el('small',`${p.category} ／ ${p.source_name} ／ 元記事 ${p.published_at.slice(0,10)}`),el('p',p.summary),el('p','選定理由：'+p.selection_reason));
   const link=el('a','元記事を読む ↗');if(url(p.source_url))link.href=url(p.source_url);link.target='_blank';link.rel='noopener noreferrer';card.append(link);
-  if(p.review_status!=='approved'){
+  {
    const actions=el('div');actions.style.cssText='display:flex;gap:12px;margin-top:15px';
-   for(const [action,label] of p.review_status==='pending'?[['approve','採用して掲載'],['reject','見送り']]:[['pending','確認待ちに戻す']]){
-    const b=el('button',label);b.className=action==='approve'?'primary':'secondary';b.onclick=async()=>{actions.querySelectorAll('button').forEach(x=>x.disabled=true);try{const r=await fetch('api/review',{method:'POST',headers:{'Content-Type':'application/json','X-Heisei-Editor':'1'},body:JSON.stringify({id:p.id,action})});const d=await r.json();if(!r.ok)throw Error(d.error);await refresh();await load();status(action==='approve'?'採用しました。ローカルの通信に掲載されています。':action==='reject'?'見送りにしました。':'確認待ちに戻しました。');}catch(e){status(e.message,true);actions.querySelectorAll('button').forEach(x=>x.disabled=false);}};actions.append(b);
+   for(const [action,label] of p.review_status==='approved'?[['withdraw','掲載を取り下げる']]:p.review_status==='pending'?[['approve','採用して掲載'],['reject','見送り']]:[['pending','確認待ちに戻す']]){
+    const b=el('button',label);b.className=action==='approve'?'primary':'secondary';b.onclick=async()=>{actions.querySelectorAll('button').forEach(x=>x.disabled=true);try{const r=await fetch('api/review',{method:'POST',headers:{'Content-Type':'application/json','X-Heisei-Editor':'1'},body:JSON.stringify({id:p.id,action})});const d=await r.json();if(!r.ok)throw Error(d.error);await refresh();await load();if(action==='withdraw'&&current?.id===p.id)select(null);status(action==='withdraw'?'掲載を取り下げ、確認待ちに戻しました。記事とコメントは保存されています。':action==='approve'?'採用しました。ローカルの通信に掲載されています。':action==='reject'?'見送りにしました。':'確認待ちに戻しました。');}catch(e){status(e.message,true);actions.querySelectorAll('button').forEach(x=>x.disabled=false);}};actions.append(b);
    }card.append(actions);
   }list.append(card);
  }
