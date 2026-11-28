@@ -5,7 +5,7 @@ import uuid
 from urllib.parse import urlsplit
 from store import ROOT, read, validate, save, locked, build, now
 
-from review import read_queue, decide
+from review import editor_queue, decide
 
 class Handler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
@@ -28,7 +28,9 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         if not self.safe_host(): return self.reply(403, {'error':'Host not allowed'})
-        if urlsplit(self.path).path == '/api/review': return self.reply(200, read_queue())
+        if urlsplit(self.path).path == '/api/review':
+            with locked(): queue = editor_queue()
+            return self.reply(200, queue)
         if urlsplit(self.path).path == '/api/posts': return self.reply(200, read())
         return super().do_GET()
 

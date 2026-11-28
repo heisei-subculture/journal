@@ -39,5 +39,42 @@ class ReviewTests(unittest.TestCase):
     review.decide(p['id'],'approve')
     self.assertEqual(len(store.read()['posts']),1)
     self.assertEqual(store.read()['posts'][0]['comment'],'採用後に書いたコメント')
+ def test_legacy_article_can_be_withdrawn_and_approved(self):
+  with tempfile.TemporaryDirectory() as folder:
+   root = Path(folder)
+   (root/'data').mkdir()
+   (root/'site').mkdir()
+   article = copy.deepcopy(next(x for x in store.read()['posts'] if x['type']=='news'))
+   article.update(id='legacy', comment='掲載後の本人コメント')
+   thought = dict(article, id='note', type='thought')
+   with patch.object(store,'ROOT',root), patch.object(store,'DATA',root/'data/posts.json'), patch.object(review,'QUEUE',root/'data/review.json'):
+    store.save({'updated_at':None,'posts':[article, thought]})
+    self.assertEqual(review.editor_queue()['candidates'], [{**article,'review_status':'approved'}])
+    self.assertFalse(review.QUEUE.exists())
+    with self.assertRaises(ValueError): review.decide('note','withdraw')
+    review.decide('legacy','withdraw')
+    self.assertEqual(store.read()['posts'], [thought])
+    candidate, = review.editor_queue()['candidates']
+    self.assertEqual(candidate['review_status'], 'pending')
+    self.assertEqual(candidate['comment'], article['comment'])
+    review.decide('legacy','approve')
+    self.assertEqual(len(review.editor_queue()['candidates']), 1)
+    self.assertEqual(store.read()['posts'][0]['comment'], article['comment'])
+ def test_withdraw_by_published_id_reuses_candidate_with_same_url(self):
+  with tempfile.TemporaryDirectory() as folder:
+   root = Path(folder)
+   (root/'data').mkdir()
+   (root/'site').mkdir()
+   article = copy.deepcopy(next(x for x in store.read()['posts'] if x['type']=='news'))
+   article.update(id='published', comment='最新のコメント')
+   with patch.object(store,'ROOT',root), patch.object(store,'DATA',root/'data/posts.json'), patch.object(review,'QUEUE',root/'data/review.json'):
+    store.save({'updated_at':None,'posts':[article]})
+    review.save_queue({'candidates':[{**article,'id':'candidate','review_status':'approved','comment':''}]})
+    candidate, = review.editor_queue()['candidates']
+    self.assertEqual(candidate['id'], 'candidate')
+    review.decide('published','withdraw')
+    candidate, = review.editor_queue()['candidates']
+    self.assertEqual((candidate['id'],candidate['review_status'],candidate['comment']), ('candidate','pending',article['comment']))
+    self.assertEqual(store.read()['posts'], [])
  def test_invalid_action_does_not_write(self):
   with self.assertRaises(ValueError):review.decide('missing','delete')

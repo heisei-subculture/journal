@@ -19,3 +19,22 @@ body{background-color:#ffda20;background-image:radial-gradient(#a875382b .8px,tr
 .article-image{position:absolute;inset:0;display:block;z-index:3;background:var(--ink)}.article-image img{width:100%;height:100%;object-fit:contain;display:block}.has-image .cover-word,.has-image .cover-sub,.has-image .cover-index{visibility:hidden}.has-image .cover:after{display:none}.has-image .cover{background:var(--ink)}.article-image:focus-visible{outline-offset:-5px;outline-color:var(--yellow)}
 
 .small-image.has-image .cover{background:var(--pink)}.small-image .article-image{inset:35px 25px 35px auto;width:28%;background:#fff0b5;border:5px solid #fff0b5;box-shadow:3px 3px 0 var(--ink);transform:rotate(5deg)}.small-image .article-image img{object-fit:scale-down}.small-image.has-image .cover-word{visibility:visible;font-size:64px;max-width:65%}.small-image.has-image .cover-sub{visibility:hidden}@media(max-width:600px){.small-image.has-image .cover-word{font-size:49px}.small-image .article-image{right:15px;top:40px;bottom:40px}}
+
+.editor-post-row{display:flex;align-items:center;gap:.5rem;border-bottom:1px solid #aaa}
+.editor-post-row button:first-child{flex:1;min-width:0;border:0}
+.editor-post-row button.secondary{width:auto;flex:none;border:1px solid;border-radius:6px;padding:.5em .75em}
+.article-filters{display:flex;flex-wrap:wrap;gap:0 1rem}
+.article-filters label{flex:1 1 9rem}
+.article-result{border-top:1px solid var(--ink);padding:1rem 0}
+.article-meta,.article-actions{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem .8rem}
+.article-meta{font-size:.78rem;color:var(--muted)}
+.article-meta [data-status]{padding:.15rem .5rem;border-radius:.25rem}
+.article-meta [data-status="approved"]{background:#14644b;color:#fff}
+.article-meta [data-status="rejected"]{background:#e2e4e8;color:#39414d}
+.article-meta [data-status="pending"]{background:#ffdf6b;color:#463309}
+.article-result summary{font-weight:700;cursor:pointer;margin:.5rem 0}
+.article-detail{display:flow-root}
+.article-detail img{float:right;width:110px;max-height:110px;object-fit:contain;margin:0 0 .5rem 1rem}
+.article-actions{font-size:.85rem}
+.article-actions button,#article-pager button{padding:.35rem .75rem}
+#article-pager{display:flex;gap:.8rem}
