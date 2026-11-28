@@ -11,7 +11,7 @@ function sourceLink(p) {const a = node('a','source',`${p.source_name}で読む �
 function article(p, index) {
   const a = node('article','entry'+(index===0?' featured':'')); a.id=p.id; a.dataset.category=p.category;
   const cover=node('div','cover');cover.setAttribute('aria-hidden','true');
-  const words={'音楽':['J-POP','MUSIC'],'アイドル':['アイドル','IDOL'],'映画・マンガ':['映画と','マンガ'],'お笑い':['お笑い','COMEDY'],'ゲーム':['ゲーム','GAME'],'雑記':['日々の','メモ']};
+  const words={'音楽':['J-POP','MUSIC'],'アイドル':['アイドル','IDOL'],'映画・マンガ':['映画と','マンガ'],'お笑い':['お笑い','COMEDY'],'ゲーム':['ゲーム','GAME'],'ファッション':['ファッション','FASHION'],'グッズ・ガジェット':['グッズ','GADGET'],'CM・広告':['CM','広告'],'雑記':['日々の','メモ']};
   const topics={
     'tsunku-2007':['LOVE\nマシーン','つんく♂ / 2007'],
     'sasaji-2026':['スピッツ\nユニコーン\nプリプリ','笹路正徳 / 2026'],
@@ -49,12 +49,23 @@ function article(p, index) {
   a.append(body);
   return a;
 }
+const filterToggle = $('.filter-toggle');
+filterToggle.addEventListener('click', () => {
+  const opening = filterToggle.getAttribute('aria-expanded') === 'false';
+  filterToggle.setAttribute('aria-expanded', String(opening));
+  $('#filter-panel').classList.toggle('is-open', opening);
+});
 function render(){
+  const activeFilters = Number(category !== 'すべて') + Number(kind !== 'all') + Number(Boolean(query));
+  filterToggle.textContent = activeFilters ? `絞り込み（${activeFilters}）` : '絞り込み';
   const posts=feed.posts.filter(p=>(category==='すべて'||p.category===category)&&(kind==='all'||(kind==='saved'?saved.has(p.id):p.type===kind))&&[p.title,p.summary,p.comment,p.category].join(' ').toLocaleLowerCase().includes(query.toLocaleLowerCase())).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
   $('#feed').replaceChildren(...posts.map(article));$('#count').textContent=`${posts.length}件の投稿`;
   if(!posts.length){const e=node('div','empty');e.append(node('strong','',kind==='saved'?'保存した記事はありません。':kind==='thought'?'つぶやきはまだありません。':'該当する投稿はまだありません。'),node('p','',kind==='saved'?'記事の「☆ あとで読む」で、このブラウザに保存できます。':'別のジャンルや検索語でも探してみてください。'));$('#feed').append(e);}
 }
-document.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>{category=b.dataset.category;document.querySelectorAll('[data-category]').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b));});render();});
+const miscFilter = document.querySelector('.filters [data-category="雑記"]');
+if (!feed.posts.some(post => post.category === '雑記')) miscFilter.remove();
+const genreButtons = document.querySelectorAll('.filters [data-category]');
+genreButtons.forEach(b=>b.onclick=()=>{category=b.dataset.category;genreButtons.forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b));});render();});
 document.querySelectorAll('[data-kind]').forEach(b=>b.onclick=()=>{kind=b.dataset.kind;document.querySelectorAll('[data-kind]').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b));});render();});
 $('#search').addEventListener('input',e=>{query=e.target.value;render();});
 $('#updated').textContent=feed.updated_at?`更新 ${date(feed.updated_at)}`:'最初の配信を準備中';

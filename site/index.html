@@ -5,21 +5,24 @@
 <title>平成サブカル通信</title>
 <meta name="description" content="音楽・アイドル・映画・マンガ・ゲーム・お笑いの記事とコメント。">
 <meta name="theme-color" content="#ffda20"><link rel="stylesheet" href="style.css?v=5">
-<link rel="stylesheet" href="pop-type.css?v=8">
+<link rel="stylesheet" href="pop-type.css?v=11">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 </head>
 <body class="journal">
 <a class="skip" href="#feed">記事へスキップ</a>
 <header class="masthead"><a class="brand" href="index.html"><img class="brand-logo" src="assets/heisei-logo.png" alt="平成サブカル通信" width="2056" height="752" fetchpriority="high"></a><nav aria-label="メイン"><a href="#feed">記事を読む ↓</a><a href="#about">この通信について</a><a id="editor-link" href="editor.html" hidden>管理画面 ↗</a></nav></header>
 <main>
-<section class="reading" aria-labelledby="feed-title"><div class="section-heading"><h2 id="feed-title">記事一覧</h2><p id="updated">読み込み中</p></div>
-<div class="controls"><div class="filters" role="group" aria-label="ジャンル"><button class="active" data-category="すべて" aria-pressed="true">すべて</button><button data-category="音楽" aria-pressed="false"><img class="category-sticker" src="assets/sticker-music.png" alt="" width="52" height="52"><span>音楽</span></button><button data-category="アイドル" aria-pressed="false"><img class="category-sticker" src="assets/sticker-idol.png" alt="" width="52" height="52"><span>アイドル</span></button><button data-category="映画・マンガ" aria-pressed="false"><img class="category-sticker" src="assets/sticker-cinema.png" alt="" width="52" height="52"><span>映画・マンガ</span></button><button data-category="お笑い" aria-pressed="false"><img class="category-sticker" src="assets/sticker-comedy.png" alt="" width="52" height="52"><span>お笑い</span></button><button data-category="ゲーム" aria-pressed="false"><img class="category-sticker" src="assets/sticker-game.png" alt="" width="52" height="52"><span>ゲーム</span></button><button data-category="雑記" aria-pressed="false"><img class="category-sticker" src="assets/sticker-notes.png" alt="" width="52" height="52"><span>雑記</span></button></div><label class="search"><span>検索</span><input id="search" type="search" placeholder="好きな名前や作品で探す" aria-label="記事を検索"></label></div>
+<section class="reading" aria-labelledby="feed-title"><div class="section-heading"><h2 id="feed-title">記事一覧</h2><p id="updated">読み込み中</p>
+<button class="filter-toggle" type="button" aria-expanded="false" aria-controls="filter-panel">絞り込み</button></div>
+<div id="filter-panel">
+<div class="controls"><div class="filters" role="group" aria-label="ジャンル"><button class="active" data-category="すべて" aria-pressed="true">すべて</button><button data-category="音楽" aria-pressed="false"><img class="category-sticker" src="assets/sticker-music.png" alt="" width="52" height="52"><span>音楽</span></button><button data-category="アイドル" aria-pressed="false"><img class="category-sticker" src="assets/sticker-idol.png" alt="" width="52" height="52"><span>アイドル</span></button><button data-category="映画・マンガ" aria-pressed="false"><img class="category-sticker" src="assets/sticker-cinema.png" alt="" width="52" height="52"><span>映画・マンガ</span></button><button data-category="お笑い" aria-pressed="false"><img class="category-sticker" src="assets/sticker-comedy.png" alt="" width="52" height="52"><span>お笑い</span></button><button data-category="ゲーム" aria-pressed="false"><img class="category-sticker" src="assets/sticker-game.png" alt="" width="52" height="52"><span>ゲーム</span></button><button data-category="ファッション" aria-pressed="false"><span class="category-sticker category-symbol" aria-hidden="true">👕</span><span>ファッション</span></button><button data-category="グッズ・ガジェット" aria-pressed="false"><span class="category-sticker category-symbol" aria-hidden="true">📸</span><span>グッズ・ガジェット</span></button><button data-category="CM・広告" aria-pressed="false"><span class="category-sticker category-symbol" aria-hidden="true">📺</span><span>CM・広告</span></button><button data-category="雑記" aria-pressed="false"><img class="category-sticker" src="assets/sticker-notes.png" alt="" width="52" height="52"><span>雑記</span></button></div><label class="search"><span>検索</span><input id="search" type="search" placeholder="好きな名前や作品で探す" aria-label="記事を検索"></label></div>
 <div class="subfilters" role="group" aria-label="投稿種別"><button class="active" data-kind="all" aria-pressed="true">すべての投稿</button><button data-kind="news" aria-pressed="false">ニュース・再発見</button><button data-kind="thought" aria-pressed="false">つぶやき</button><button data-kind="saved" aria-pressed="false">あとで読む ☆</button></div>
+</div>
 <p id="count" class="result-count" role="status" aria-live="polite"></p>
 <div id="feed" tabindex="-1"></div>
 </section>
 <section id="about" class="about"><details><summary>このサイトについて</summary><p>記事には出典と元記事の公開日を表示しています。AIによる選定・要約と、運営者のコメント・つぶやきは分けて掲載しています。「あとで読む」は、このブラウザに保存されます。</p></details></section>
 </main>
 <footer><span>平成サブカル通信</span><span>HEISEI SUBCULTURE JOURNAL</span><a href="#">ページの先頭へ ↑</a></footer>
-<script src="feed.js"></script><script src="app.js?v=6"></script>
+<script src="feed.js"></script><script src="app.js?v=8"></script>
 </body></html>
